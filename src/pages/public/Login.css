@@ -1,0 +1,151 @@
+/*
+  NUEVO DISEÑO "TRADICIONAL" (TARJETA CENTRADA)
+  Se aplicará a Login.js y Registro.js
+*/
+
+/* --- 1. Contenedor de Página (Fondo) --- */
+.auth-container {
+  display: flex;
+  align-items: center; /* Centrado vertical */
+  justify-content: center; /* Centrado horizontal */
+  min-height: 100vh; /* Ocupar toda la altura de la vista */
+  padding: 40px 20px; /* Espacio para pantallas pequeñas */
+  /* Un fondo suave, puedes cambiarlo por una imagen borrosa */
+  background: linear-gradient(135deg, #fce4ec 0%, #f4f4f4 100%);
+  box-sizing: border-box;
+}
+
+/* --- 2. La "Tarjeta" del Formulario --- */
+.auth-form {
+  background: #fff;
+  border-radius: 12px;
+  /* Una sombra más pronunciada y moderna */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px; /* Ancho máximo de la tarjeta */
+  box-sizing: border-box;
+  
+  /* --- ¡LA ANIMACIÓN QUE PEDISTE! --- */
+  /* La tarjeta aparecerá desde abajo */
+  animation: fadeInUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.auth-form h2 {
+  text-align: center;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* --- 3. Estilos de Inputs y Botones (ya los teníamos) --- */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="password"],
+.form-group select,
+.PhoneInput .PhoneInputInput {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.PhoneInputInput:focus {
+  outline: none;
+  border-color: #ad1457;
+  box-shadow: 0 0 0 4px rgba(173, 20, 87, 0.1); 
+}
+
+/* --- 4. Animaciones de Botones (ya las teníamos) --- */
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background-color: #ad1457;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #c2185b;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(173, 20, 87, 0.3);
+}
+
+.submit-btn:disabled {
+  background-color: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Estilo para el botón "Reenviar" cuando está deshabilitado */
+.terms-link[disabled] {
+  color: #9e9e9e; /* Color gris */
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* --- 5. Estilos de "Ojito", Teléfono, Errores y Términos (sin cambios) --- */
+.password-wrapper { position: relative; width: 100%; }
+.password-wrapper input { padding-right: 50px !important; }
+.toggle-password { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0; line-height: 1; color: #777; }
+.toggle-password svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.PhoneInput .PhoneInputInput { border: none !important; box-shadow: none !important; margin-left: 5px; padding: 0; }
+.PhoneInput { display: flex; align-items: center; padding: 0 15px; border: 1px solid #ddd; border-radius: 8px; transition: all 0.3s ease; }
+.PhoneInput:focus-within { border-color: #ad1457; box-shadow: 0 0 0 4px rgba(173, 20, 87, 0.1); }
+
+.error-msg { color: #D93025; font-size: 0.85rem; margin-top: 5px; display: block; text-align: left; }
+.input-error, .PhoneInput.input-error { border-color: #D93025 !important; }
+
+.terms-group { margin-top: 15px; margin-bottom: 20px; display: flex; align-items: center; font-size: 0.9rem; }
+.terms-group input[type="checkbox"] { margin-right: 10px; width: auto; }
+.terms-group label { margin-bottom: 0 !important; font-weight: normal !important; }
+.terms-link { color: #ad1457; text-decoration: underline; cursor: pointer; margin-left: 5px; }
+
+/* --- 6. Definición de la Nueva Animación --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ... (Al final de tu Login.css) ... */
+
+/* Estilo para el botón "Reenviar" cuando está deshabilitado */
+.terms-link[disabled] {
+  color: #9e9e9e; /* Color gris */
+  cursor: not-allowed;
+  text-decoration: none;
+}
