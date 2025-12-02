@@ -13,7 +13,7 @@ import ClientLayout from './layouts/ClientLayout';
 import HomePage from './pages/public/HomePage';
 import Registro from './pages/public/Registro';
 import Login from './pages/public/Login';
-import VerificarCodigo from './pages/public/VerificarCodigo';
+
 import Terminos from './pages/public/Terminos';
 import OlvidePassword from './pages/public/OlvidePassword';
 import VerificarReset from './pages/public/VerificarReset';
@@ -37,7 +37,6 @@ function App() {
         {/* --- RUTAS DE AUTENTICACIÓN --- */}
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
-        <Route path="/verificar-codigo" element={<VerificarCodigo />} />
         <Route path="/terminos-y-condiciones" element={<Terminos />} /> {/* <-- ¡AÑADE ESTA LÍNEA! */}
         {/* --- ¡AÑADE ESTAS 3 RUTAS! --- */}
         <Route path="/olvide-password" element={<OlvidePassword />} />
