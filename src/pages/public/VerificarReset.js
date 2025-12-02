@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'; // <-- Importar useEffect
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
-
+import API_URL from '../../config'; // Importa la URL
 function VerificarReset() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
@@ -41,7 +41,7 @@ function VerificarReset() {
 
     try {
       // Llamamos a la misma ruta que la primera página
-      const response = await fetch('http://localhost:5000/api/auth/forgot-password', {
+      const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -65,7 +65,7 @@ function VerificarReset() {
     setError('');
 
     try {
-      const response = await fetch('https://localhost:5000/api/auth/verify-reset-code', {
+      const response = await fetch(`${API_URL}/api/auth/verify-reset-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, code: code })

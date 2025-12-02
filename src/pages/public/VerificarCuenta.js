@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css'; // Usamos el mismo estilo limpio
+import API_URL from '../../config'; // Importa la URL
 
 function VerificarCuenta() {
   const [code, setCode] = useState('');
@@ -30,7 +31,7 @@ function VerificarCuenta() {
     setError('');
 
     try {
-      const response = await fetch('https://localhost:5000/api/auth/verify-code', {
+      const response = await fetch(`${API_URL}/api/auth/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code })

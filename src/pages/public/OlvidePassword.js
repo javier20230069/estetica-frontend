@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import API_URL from '../../config'; // <--- 1. ¡IMPORTANTE! Faltaba importar esto
 
 function OlvidePassword() {
   const [email, setEmail] = useState('');
-  const [metodo, setMetodo] = useState('correo'); // 'correo' o 'pregunta'
-  const [step, setStep] = useState(1); // Paso 1: Email, Paso 2: Pregunta
+  const [metodo, setMetodo] = useState('correo'); 
+  const [step, setStep] = useState(1); 
   const [preguntaGuardada, setPreguntaGuardada] = useState('');
   const [respuesta, setRespuesta] = useState('');
   
@@ -19,9 +20,9 @@ function OlvidePassword() {
     setError('');
 
     if (metodo === 'correo') {
-      // Lógica original de enviar correo
       try {
-        const res = await fetch('https://localhost:5000/api/auth/forgot-password', {
+        // <--- 2. CORREGIDO: Usar API_URL
+        const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
@@ -32,9 +33,10 @@ function OlvidePassword() {
         setTimeout(() => navigate('/verificar-reset', { state: { email } }), 2000);
       } catch (err) { setError(err.message); }
     } else {
-      // Método PREGUNTA: Primero obtenemos la pregunta del backend
+      // Método PREGUNTA
       try {
-        const res = await fetch('https://localhost:5000/api/auth/get-question', {
+        // <--- 3. CORREGIDO: Usar API_URL
+        const res = await fetch(`${API_URL}/api/auth/get-question`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
@@ -42,7 +44,6 @@ function OlvidePassword() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message);
         
-        // Mapeo para mostrar texto bonito
         const preguntasMap = {
           'nombre_mascota': '¿Cuál es el nombre de tu primera mascota?',
           'ciudad_padres': '¿En qué ciudad se conocieron tus padres?',
@@ -51,7 +52,7 @@ function OlvidePassword() {
         };
 
         setPreguntaGuardada(preguntasMap[data.pregunta] || data.pregunta);
-        setStep(2); // Pasamos a mostrar la pregunta
+        setStep(2); 
       } catch (err) { setError(err.message); }
     }
   };
@@ -60,7 +61,8 @@ function OlvidePassword() {
   const handleVerificarRespuesta = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://localhost:5000/api/auth/recover-by-question', {
+      // <--- 4. CORREGIDO: Usar API_URL
+      const res = await fetch(`${API_URL}/api/auth/recover-by-question`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, respuesta })
@@ -68,8 +70,6 @@ function OlvidePassword() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      // ¡Éxito! Nos saltamos la verificación de código y vamos directo al reset
-      // Pasamos el 'resetToken' que nos dio el backend
       navigate('/reset-password', { state: { email, code: data.resetToken } });
 
     } catch (err) { setError(err.message); }

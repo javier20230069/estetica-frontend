@@ -1,40 +1,49 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import '../App.css'; // Usamos los estilos principales
+import logo from '../assets/LogoImagen.png'; // Importamos tu logo
+import './PublicLayout.css'; // Crearemos este archivo de estilos
 
-// --- Encabezado (Header) ---
-// Lo movimos de App.js aquí
 function Header() {
   return (
-    <header className="app-header">
-      <div className="logo">
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <h1>Mi Estética</h1>
-        </Link>
+    <header className="main-header">
+      <div className="header-container">
+        
+        {/* 1. LOGO (Clickeable para ir al inicio) */}
+        <div className="logo-container">
+          <Link to="/">
+            <img src={logo} alt="Ezequiel Castillo Logo" className="header-logo" />
+          </Link>
+        </div>
+
+        {/* 2. NAVEGACIÓN (Enlaces centrales - Opcional) */}
+        <nav className="nav-links">
+          <Link to="/">Inicio</Link>
+          <a href="#servicios">Servicios</a> {/* Enlace ancla a la sección del Home */}
+          <Link to="/terminos-y-condiciones">Términos</Link>
+        </nav>
+
+        {/* 3. BOTONES DE ACCIÓN (Derecha) */}
+        <div className="header-actions">
+          <Link to="/login" className="btn-login">
+            Iniciar Sesión
+          </Link>
+          <Link to="/registro" className="btn-registro">
+            Registrarse
+          </Link>
+        </div>
+
       </div>
-      <nav className="navigation">
-        <Link to="/login">
-          <button>Iniciar Sesión</button>
-        </Link>
-        <Link to="/registro">
-          <button>Registrarse</button>
-        </Link>
-      </nav>
     </header>
   );
 }
 
-// --- Plantilla Pública ---
 function PublicLayout() {
   return (
-    <div className="App">
+    <div className="layout-wrapper">
       <Header />
-      <main>
-        {/* Outlet es el espacio donde se renderizarán 
-            tus páginas (HomePage, Login, Registro, etc.) */}
+      <main className="layout-content">
         <Outlet /> 
       </main>
-      {/* Aquí podrías poner un <Footer /> si tuvieras uno */}
     </div>
   );
 }

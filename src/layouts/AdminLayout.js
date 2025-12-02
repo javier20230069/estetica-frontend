@@ -1,23 +1,33 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/logo_completo.png';
+import './AdminLayout.css'; // Importamos el CSS nuevo
 
 function AdminLayout() {
   const { user, logout } = useAuth();
 
   return (
-    <div>
-      <header style={{ background: '#333', color: 'white', padding: '10px' }}>
-        <h3>Panel de Administrador</h3>
-        <p>Bienvenido, {user?.nombre}</p>
-        <nav>
-          <Link to="/admin/dashboard">Dashboard</Link> | 
-          <Link to="/admin/inventario">Inventario</Link> | {/* (Futura) */}
-          <button onClick={logout}>Cerrar Sesión</button>
+    <div className="admin-layout">
+      <header className="admin-header">
+        <div className="logo-section">
+          <Link to="/admin/dashboard">
+            <img src={logo} alt="Admin Panel" className="admin-logo" />
+          </Link>
+        </div>
+        
+        <nav className="admin-nav">
+          <span style={{marginRight: '15px', color: '#ad1457', fontWeight: 'bold'}}>
+            Hola, {user?.nombre} (Admin)
+          </span>
+          <Link to="/admin/dashboard">Inicio</Link>
+          <Link to="/admin/citas">Gestionar Citas</Link> {/* Futuro */}
+          <Link to="/admin/inventario">Inventario</Link> {/* Futuro */}
+          <button onClick={logout} className="btn-logout">Cerrar Sesión</button>
         </nav>
       </header>
-      <main style={{ padding: '20px' }}>
-        {/* Aquí se renderizarán las páginas de admin (Dashboard, Inventario, etc.) */}
+
+      <main className="admin-content">
         <Outlet />
       </main>
     </div>

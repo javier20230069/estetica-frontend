@@ -1,0 +1,83 @@
+.welcome-card {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+  gap: 18px;
+}
+
+/* parte izquierda */
+.welcome-card-main {
+  position: relative;
+  z-index: 1;
+}
+
+/* parte derecha */
+.welcome-card-highlight {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+}
+
+/* chip "Nuevo" */
+.welcome-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #ad1457;
+  margin-bottom: 6px;
+}
+
+/* header de la lista */
+.citas-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* combo futuro de filtros */
+.citas-list-filters select {
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+  color: #999;
+}
+
+/* botón en estado vacío */
+.empty-cta {
+  margin-top: 14px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: none;
+  background: #ad1457;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.empty-cta:hover {
+  background: #c2185b;
+  box-shadow: 0 8px 18px rgba(173, 20, 87, 0.35);
+  transform: translateY(-1px);
+}
+
+.empty-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(173, 20, 87, 0.4);
+}
+
+/* responsive de la tarjeta de bienvenida */
+@media (max-width: 720px) {
+  .welcome-card {
+    grid-template-columns: 1fr;
+  }
+}

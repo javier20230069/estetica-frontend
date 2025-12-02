@@ -20,8 +20,10 @@ import VerificarReset from './pages/public/VerificarReset';
 import ResetPassword from './pages/public/ResetPassword';
 import VerificarCuenta from './pages/public/VerificarCuenta';
 
+
 import Dashboard from './pages/admin/Dashboard';
 import MisCitas from './pages/client/MisCitas';
+import DashboardCliente from './pages/client/DashboardCliente';
 
 function App() {
   return (
@@ -60,7 +62,12 @@ function App() {
         {/* --- RUTAS DE CLIENTE PROTEGIDAS --- */}
         <Route element={<RutaProtegida roles={['cliente']} />}>
           <Route path="/cliente" element={<ClientLayout />}>
+            {/* Esta será la página por defecto al entrar a /cliente */}
+            <Route index element={<DashboardCliente />} /> 
+
+            <Route path="dashboard" element={<DashboardCliente />} />
             <Route path="mis-citas" element={<MisCitas />} />
+            {/* <Route path="agendar" element={<AgendarCita />} /> */}
           </Route>
         </Route>
 

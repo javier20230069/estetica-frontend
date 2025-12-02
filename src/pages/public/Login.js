@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Login.css';
-import logo from '../../assets/logo_completo.png'; // Asumo que tu logo está aquí
-
+import logo from '../../assets/logo_completo.png'; 
+import API_URL from '../../config'; // Importa la URL
 // --- ¡NUEVO! ---
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -21,12 +21,12 @@ function Login() {
   const { login } = useAuth();
   const [error, setError] = useState('');
 
-  // --- (handleSubmit para login normal se queda igual) ---
+  // --- Login Normal ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); 
     try {
-      const response = await fetch('https://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, rol }) 
@@ -38,7 +38,7 @@ function Login() {
       if (data.user.tipo_usuario === 'admin') {
         navigate('/admin/dashboard');
       } else {
-        navigate('/cliente/mis-citas');
+        navigate('/cliente/dashboard');
       }
     } catch (error) {
       console.error('Error de login:', error);
@@ -46,34 +46,25 @@ function Login() {
     }
   };
 
-  // --- ¡NUEVA FUNCIÓN! ---
+  // --- Login Google ---
   const handleGoogleSuccess = async (credentialResponse) => {
     setError('');
     const { credential } = credentialResponse;
-
     try {
-      // Enviamos el token de Google a NUESTRO backend
-      const response = await fetch('https://localhost:5000/api/auth/google-login', {
+      const response = await fetch(`${API_URL}/api/auth/google-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential })
       });
-
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
-
-      // Usamos nuestro 'AuthContext' para loguear al usuario
       login(data.user, data.token);
-
       alert(data.message);
-
-      // Redirigir al dashboard
       if (data.user.tipo_usuario === 'admin') {
         navigate('/admin/dashboard');
       } else {
-        navigate('/cliente/mis-citas');
+        navigate('/cliente/dashboard');
       }
-
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión con Google');
     }
@@ -86,26 +77,34 @@ function Login() {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
+        
+        {/* --- LOGO CON LINK AL HOME --- */}
         <div style={{textAlign: 'center', marginBottom: '25px'}}>
-          <img src={logo} alt="Logo de la empresa" style={{maxWidth: '180px', height: 'auto'}} />
+          <Link to="/">
+            <img 
+              src={logo} 
+              alt="Logo de la empresa" 
+              style={{maxWidth: '180px', height: 'auto', cursor: 'pointer'}} 
+            />
+          </Link>
         </div>
-
+        
         <h2>Iniciar Sesión</h2>
-
+        
         {error && <small className="error-msg" style={{textAlign: 'center', marginBottom: '15px'}}>{error}</small>}
 
-        {/* --- ¡NUEVO! Botón de Google --- */}
+        {/* Botón de Google */}
         <div className="form-group" style={{display: 'flex', justifyContent: 'center'}}>
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}
-            useOneTap // Intenta loguear automáticamente
+            useOneTap 
           />
         </div>
 
         <p style={{textAlign: 'center', fontWeight: '600', color: '#888', margin: '20px 0'}}>O</p>
 
-        {/* --- (Formulario normal) --- */}
+        {/* Formulario Normal */}
         <div className="form-group">
           <label>Tipo de Sesión:</label>
           <select value={rol} onChange={(e) => setRol(e.target.value)}>

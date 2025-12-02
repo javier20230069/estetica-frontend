@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Registro.css'; // Asegúrate de que este archivo tenga los estilos (o importe Login.css)
+import './Registro.css'; 
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import API_URL from '../../config'; // Importa la URL
 
-// Importa el logo
 import logo from '../../assets/logo_completo.png'; 
 
-// --- (Iconos SVG para el "ojito") ---
-const EyeIcon = () => (
-  <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-);
-const EyeSlashIcon = () => (
-  <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07l-5.06-5.06M1 1l22 22"></path></svg>
-);
+// --- (Iconos SVG...) ---
+const EyeIcon = () => ( <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> );
+const EyeSlashIcon = () => ( <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07l-5.06-5.06M1 1l22 22"></path></svg> );
+// --- (Fin Iconos) ---
 
-// --- Componente Principal de Registro ---
 function Registro() {
   const navigate = useNavigate();
   
-  // --- Estados del Formulario ---
+  // --- Estados ---
   const [nombre, setNombre] = useState('');
   const [apellidos, setApellidos] = useState('');
   const [telefono, setTelefono] = useState(''); 
@@ -27,11 +23,9 @@ function Registro() {
   const [password, setPassword] = useState('');
   const [confirmarPassword, setConfirmarPassword] = useState('');
   
-  // Nuevos estados para la Pregunta Secreta
   const [preguntaSecreta, setPreguntaSecreta] = useState('');
   const [respuestaSecreta, setRespuestaSecreta] = useState('');
   
-  // --- Estados de UX ---
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -56,10 +50,8 @@ function Registro() {
     setErrors(prevErrors => ({ ...prevErrors, password: passwordError }));
   };
 
-  // Función de validación general
   const validateForm = (checkTerms = false) => {
     const newErrors = {};
-
     if (!nombre.trim()) newErrors.nombre = "El nombre es obligatorio.";
     if (!apellidos.trim()) newErrors.apellidos = "Los apellidos son obligatorios.";
     
@@ -75,19 +67,15 @@ function Registro() {
     if (!confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña.";
     else if (password !== confirmarPassword) newErrors.confirmarPassword = "Las contraseñas no coinciden.";
 
-    // Validaciones de la pregunta secreta
     if (!preguntaSecreta) newErrors.preguntaSecreta = "Selecciona una pregunta secreta.";
     if (!respuestaSecreta.trim()) newErrors.respuestaSecreta = "La respuesta secreta es obligatoria.";
 
-    if (checkTerms && !agreedToTerms) {
-      newErrors.terms = "Debes aceptar los términos y condiciones.";
-    }
+    if (checkTerms && !agreedToTerms) newErrors.terms = "Debes aceptar los términos y condiciones.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Habilitar/Deshabilitar botón
   useEffect(() => {
     const allFieldsFilled = 
       nombre.trim() !== '' &&
@@ -110,26 +98,14 @@ function Registro() {
   }, [nombre, apellidos, telefono, email, password, confirmarPassword, preguntaSecreta, respuestaSecreta, agreedToTerms]);
   
   
-  // --- Enviar Formulario ---
   const handleSubmit = async (e) => {
     e.preventDefault(); 
+    if (!validateForm(true)) return; 
     
-    if (!validateForm(true)) {
-      return; 
-    }
-    
-    const datosParaEnviar = { 
-      nombre, 
-      apellidos, 
-      telefono, 
-      email, 
-      password,
-      preguntaSecreta,
-      respuestaSecreta
-    };
+    const datosParaEnviar = { nombre, apellidos, telefono, email, password, preguntaSecreta, respuestaSecreta };
 
     try {
-      const response = await fetch('https://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosParaEnviar)
@@ -139,9 +115,6 @@ function Registro() {
       if (!response.ok) throw new Error(data.message || 'Error en el registro');
       
       alert(data.message);
-      
-      // --- CORRECCIÓN IMPORTANTE ---
-      // Redirigir a Verificar Cuenta (NO al Login)
       navigate('/verificar-cuenta', { state: { email: datosParaEnviar.email } });
 
     } catch (error) {
@@ -155,8 +128,15 @@ function Registro() {
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
         
+        {/* --- LOGO CON LINK AL HOME --- */}
         <div style={{textAlign: 'center', marginBottom: '25px'}}>
-          <img src={logo} alt="Logo de la empresa" style={{maxWidth: '180px', height: 'auto'}} />
+          <Link to="/">
+            <img 
+              src={logo} 
+              alt="Logo de la empresa" 
+              style={{maxWidth: '180px', height: 'auto', cursor: 'pointer'}} 
+            />
+          </Link>
         </div>
 
         <h2>Crear Cuenta</h2>
@@ -195,7 +175,7 @@ function Registro() {
           {errors.email && <small className="error-msg">{errors.email}</small>}
         </div>
 
-        {/* --- SECCIÓN DE PREGUNTA SECRETA --- */}
+        {/* --- Pregunta Secreta --- */}
         <div className="form-group">
           <label>Pregunta Secreta (para recuperar contraseña):</label>
           <select 
@@ -224,8 +204,8 @@ function Registro() {
           <small style={{color: '#888', fontSize: '0.8rem', display:'block', marginTop:'4px'}}>Esta respuesta es privada y segura.</small>
           {errors.respuestaSecreta && <small className="error-msg">{errors.respuestaSecreta}</small>}
         </div>
-        {/* ----------------------------------- */}
         
+        {/* --- Contraseñas --- */}
         <div className="form-group">
           <label>Contraseña:</label>
           <div className="password-wrapper">
